@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starfinder 2e - Starship Sheet</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #0f3460;
+            --highlight-color: #e94560;
+            --text-color: #eaeaea;
+            --input-bg: rgba(255, 255, 255, 0.1);
+            --border-color: #0f3460;
+            --glow-color: rgba(233, 69, 96, 0.3);
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 8mm;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-color);
+            padding: 10px;
+        }
+
+        .sheet-container {
+            width: 210mm;
+            min-height: 277mm;
+            max-height: 277mm;
+            margin: 0 auto;
+            background: var(--secondary-color);
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 12px 15px;
+            box-shadow: 0 0 20px var(--glow-color);
+            position: relative;
+            overflow: visible;
+        }
+
+        /* Corner Decorations */
+        .sheet-container::before,
+        .sheet-container::after {
+            content: "";
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border: 2px solid var(--highlight-color);
+            opacity: 0.5;
+        }
+
+        .sheet-container::before {
+            top: 5px;
+            left: 5px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .sheet-container::after {
+            bottom: 5px;
+            right: 5px;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--highlight-color);
+            text-shadow: 0 0 10px var(--glow-color);
+            letter-spacing: 2px;
+            margin-bottom: 2px;
+        }
+
+        .header .subtitle {
+            font-size: 0.65rem;
+            color: #888;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Top Section: Image + Basic Info + Stats */
+        .top-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .ship-image-container {
+            flex: 0 0 120px;
+            height: 90px;
+            background: var(--input-bg);
+            border: 1px dashed var(--accent-color);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        /*
+            PLACEHOLDER GRAPHIC: Main Starship Image
+            AI Generation Prompt: "Sci-fi starship top-down view, sleek futuristic spacecraft,
+            dark space background with stars, blue and purple lighting accents,
+            detailed hull plating, Starfinder RPG style, digital art"
+            Size: 120x90 pixels
+        */
+        .ship-image-container::before {
+            content: "Ship Image";
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        .basic-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .input-group label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.55rem;
+            color: var(--highlight-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 5px 8px;
+            color: var(--text-color);
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.75rem;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: var(--highlight-color);
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: flex;
+            gap: 4px;
+            flex: 0 0 auto;
+            flex-wrap: nowrap;
+            justify-content: flex-end;
+            align-items: flex-start;
+        }
+
+        .stat-box {
+            background: linear-gradient(145deg, var(--accent-color), var(--primary-color));
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 4px 6px;
+            text-align: center;
+            min-width: 55px;
+        }
+
+        .stat-box label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.5rem;
+            color: var(--highlight-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .stat-box input {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 3px;
+            color: var(--text-color);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-align: center;
+            width: 42px;
+        }
+
+        .stat-box input:focus {
+            outline: none;
+            border-color: var(--highlight-color);
+        }
+
+        /* Saving Throws inline with stats */
+        .save-box {
+            background: linear-gradient(145deg, var(--accent-color), var(--primary-color));
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 4px 6px;
+            text-align: center;
+            min-width: 50px;
+        }
+
+        .save-box label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.45rem;
+            color: var(--highlight-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .save-box input {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            color: var(--text-color);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .save-box input:focus {
+            outline: none;
+            border-color: var(--highlight-color);
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--highlight-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-title::before {
+            content: "◆";
+            font-size: 0.6rem;
+        }
+
+        /* Roles Section */
+        .roles-section {
+            margin-bottom: 8px;
+        }
+
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+
+        .role-card {
+            background: linear-gradient(145deg, var(--accent-color), var(--primary-color));
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 6px 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .role-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        /*
+            PLACEHOLDER GRAPHICS: Role Icons (7 icons needed)
+            AI Generation Prompts:
+            1. Captain: "Sci-fi captain insignia, golden star emblem, 24x24 pixels"
+            2. Engineer: "Futuristic wrench and gear icon, neon blue, 24x24 pixels"
+            3. Gunner: "Sci-fi targeting reticle icon, red crosshair, 24x24 pixels"
+            4. Magic Officer: "Arcane crystal icon, purple magical glow, 24x24 pixels"
+            5. Pilot: "Futuristic flight yoke icon, holographic blue, 24x24 pixels"
+            6. Science Officer: "Sci-fi atom icon, green glow, 24x24 pixels"
+            7. Medical Officer: "Futuristic medical cross, teal glow, 24x24 pixels"
+            Size: 24x24 pixels each
+        */
+
+        .role-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .role-info .role-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.5rem;
+            color: var(--highlight-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+
+        .role-info input {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            padding: 3px 5px;
+            color: var(--text-color);
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.65rem;
+            width: 100%;
+        }
+
+        .role-info input:focus {
+            outline: none;
+            border-color: var(--highlight-color);
+        }
+
+        .role-info input::placeholder {
+            color: #555;
+            font-size: 0.6rem;
+        }
+
+        /* Two Column Layout for Bonuses and Description */
+        .two-column {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .two-column > section {
+            flex: 1;
+        }
+
+        .bonuses-section textarea,
+        .description-section textarea {
+            width: 100%;
+            height: 180px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 8px;
+            color: var(--text-color);
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.7rem;
+            line-height: 1.4;
+            resize: none;
+        }
+
+        .bonuses-section textarea:focus,
+        .description-section textarea:focus {
+            outline: none;
+            border-color: var(--highlight-color);
+        }
+
+        /* Notes Section */
+        .notes-section {
+            margin-bottom: 8px;
+        }
+
+        .notes-section textarea {
+            width: 100%;
+            height: 140px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 8px;
+            color: var(--text-color);
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.7rem;
+            line-height: 1.4;
+            resize: none;
+        }
+
+        .notes-section textarea:focus {
+            outline: none;
+            border-color: var(--highlight-color);
+        }
+
+        /* Footer / Actions - hidden on print */
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            padding-top: 8px;
+            border-top: 1px solid var(--accent-color);
+        }
+
+        .btn {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 6px 15px;
+            border: 1px solid var(--highlight-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: var(--highlight-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--highlight-color);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-color);
+            border-color: var(--accent-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--highlight-color);
+            color: var(--highlight-color);
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .sheet-container {
+                width: 100%;
+                max-width: none;
+                min-height: auto;
+                max-height: none;
+                box-shadow: none;
+                border-radius: 0;
+                border: 1px solid #333;
+                page-break-inside: avoid;
+            }
+
+            .actions {
+                display: none !important;
+            }
+
+            .input-group input,
+            .input-group textarea,
+            .stat-box input,
+            .save-box input,
+            .role-info input,
+            .bonuses-section textarea,
+            .description-section textarea,
+            .notes-section textarea {
+                border: 1px solid #999;
+                background: #f8f8f8 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        /* Screen responsive */
+        @media screen and (max-width: 800px) {
+            .sheet-container {
+                width: 100%;
+                min-height: auto;
+                max-height: none;
+            }
+
+            .top-section {
+                flex-direction: column;
+            }
+
+            .ship-image-container {
+                width: 100%;
+                flex: none;
+            }
+
+            .stats-row {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .roles-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .two-column {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sheet-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Starship Sheet</h1>
+            <p class="subtitle">Starfinder 2nd Edition</p>
+        </header>
+
+        <!-- Top Section: Image + Info + Stats -->
+        <section class="top-section">
+            <div class="ship-image-container" id="shipImage" onclick="document.getElementById('imageUpload').click()">
+                <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="loadImage(event)">
+            </div>
+
+            <div class="basic-info">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="shipName">Starship Name</label>
+                        <input type="text" id="shipName" placeholder="">
+                    </div>
+                    <div class="input-group">
+                        <label for="shipClass">Class / Tier</label>
+                        <input type="text" id="shipClass" placeholder="">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="shipDesc">Quick Description</label>
+                    <input type="text" id="shipDesc" placeholder="">
+                </div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-box">
+                    <label>AC</label>
+                    <input type="number" id="armorClass" placeholder="">
+                </div>
+                <div class="stat-box">
+                    <label>HP</label>
+                    <input type="text" id="hitPoints" placeholder="">
+                </div>
+                <div class="stat-box">
+                    <label>Shields</label>
+                    <input type="text" id="shields" placeholder="">
+                </div>
+                <div class="save-box">
+                    <label>Reflex</label>
+                    <input type="text" id="reflexSave" placeholder="">
+                </div>
+                <div class="save-box">
+                    <label>Fort</label>
+                    <input type="text" id="fortSave" placeholder="">
+                </div>
+            </div>
+        </section>
+
+        <!-- Crew Roles -->
+        <section class="roles-section">
+            <h2 class="section-title">Crew Roles</h2>
+            <div class="roles-grid">
+                <div class="role-card">
+                    <div class="role-icon">👑</div>
+                    <div class="role-info">
+                        <div class="role-name">Captain</div>
+                        <input type="text" id="captain" placeholder="">
+                    </div>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon">🔧</div>
+                    <div class="role-info">
+                        <div class="role-name">Engineer</div>
+                        <input type="text" id="engineer" placeholder="">
+                    </div>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon">🎯</div>
+                    <div class="role-info">
+                        <div class="role-name">Gunner</div>
+                        <input type="text" id="gunner" placeholder="">
+                    </div>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon">✨</div>
+                    <div class="role-info">
+                        <div class="role-name">Magic Officer</div>
+                        <input type="text" id="magicOfficer" placeholder="">
+                    </div>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon">🛸</div>
+                    <div class="role-info">
+                        <div class="role-name">Pilot</div>
+                        <input type="text" id="pilot" placeholder="">
+                    </div>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon">🔬</div>
+                    <div class="role-info">
+                        <div class="role-name">Science Officer</div>
+                        <input type="text" id="scienceOfficer" placeholder="">
+                    </div>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon">⚕️</div>
+                    <div class="role-info">
+                        <div class="role-name">Medical Officer</div>
+                        <input type="text" id="medicalOfficer" placeholder="">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Two Column: Bonuses + Description -->
+        <div class="two-column">
+            <section class="bonuses-section">
+                <h2 class="section-title">Starship Bonuses</h2>
+                <textarea id="bonuses" placeholder=""></textarea>
+            </section>
+
+            <section class="description-section">
+                <h2 class="section-title">Starship Description</h2>
+                <textarea id="description" placeholder=""></textarea>
+            </section>
+        </div>
+
+        <!-- Notes Section -->
+        <section class="notes-section">
+            <h2 class="section-title">Session Notes</h2>
+            <textarea id="notes" placeholder=""></textarea>
+        </section>
+
+        <!-- Action Buttons -->
+        <div class="actions">
+            <button class="btn btn-primary" onclick="exportToPDF()">Export to PDF</button>
+            <button class="btn btn-secondary" onclick="saveToStorage()">Save</button>
+            <button class="btn btn-secondary" onclick="loadFromStorage()">Load</button>
+            <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+        </div>
+    </div>
+
+    <!-- jsPDF for form-fillable PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        function loadImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const container = document.getElementById('shipImage');
+                    container.style.backgroundImage = `url(${e.target.result})`;
+                    container.style.backgroundSize = 'cover';
+                    container.style.backgroundPosition = 'center';
+                    container.innerHTML = '<input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="loadImage(event)">';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function exportToPDF() {
+            /*
+             * PDF Form Field IDs (matching HTML input IDs):
+             * =============================================
+             * Basic Info:
+             *   - shipName      : Starship Name
+             *   - shipClass     : Class / Tier
+             *   - shipDesc      : Quick Description
+             *
+             * Stats:
+             *   - armorClass    : Armor Class (AC)
+             *   - hitPoints     : Hit Points (HP)
+             *   - shields       : Shields
+             *
+             * Saving Throws:
+             *   - reflexSave    : Reflex Save
+             *   - fortSave      : Fortitude Save
+             *
+             * Crew Roles:
+             *   - captain       : Captain
+             *   - engineer      : Engineer
+             *   - gunner        : Gunner
+             *   - magicOfficer  : Magic Officer
+             *   - pilot         : Pilot
+             *   - scienceOfficer: Science Officer
+             *   - medicalOfficer: Medical Officer
+             *
+             * Text Areas:
+             *   - bonuses       : Starship Bonuses
+             *   - description   : Starship Description
+             *   - notes         : Session Notes
+             */
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            // Colors
+            const darkBg = [22, 33, 62];
+            const accentColor = [15, 52, 96];
+            const highlightColor = [233, 69, 96];
+            const textColor = [234, 234, 234];
+            const inputBg = [40, 50, 80];
+
+            // Fill background
+            doc.setFillColor(...darkBg);
+            doc.rect(0, 0, 210, 297, 'F');
+
+            // Border
+            doc.setDrawColor(...accentColor);
+            doc.setLineWidth(0.5);
+            doc.rect(5, 5, 200, 287);
+
+            // Corner decorations
+            doc.setDrawColor(...highlightColor);
+            doc.setLineWidth(0.3);
+            doc.line(8, 8, 20, 8);
+            doc.line(8, 8, 8, 20);
+            doc.line(202, 289, 190, 289);
+            doc.line(202, 289, 202, 277);
+
+            // Title
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(22);
+            doc.setTextColor(...highlightColor);
+            doc.text('STARSHIP SHEET', 105, 18, { align: 'center' });
+
+            doc.setFontSize(8);
+            doc.setTextColor(136, 136, 136);
+            doc.text('STARFINDER 2ND EDITION', 105, 24, { align: 'center' });
+
+            // Divider line
+            doc.setDrawColor(...accentColor);
+            doc.line(10, 28, 200, 28);
+
+            let y = 35;
+
+            // Helper function to draw labeled input box
+            function drawField(x, y, w, h, label, fieldName, value) {
+                // Label
+                doc.setFontSize(6);
+                doc.setTextColor(...highlightColor);
+                doc.setFont('helvetica', 'bold');
+                doc.text(label.toUpperCase(), x, y - 1);
+
+                // Input box
+                doc.setFillColor(...inputBg);
+                doc.setDrawColor(...accentColor);
+                doc.roundedRect(x, y, w, h, 1, 1, 'FD');
+
+                // Add AcroForm text field
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                doc.setTextColor(...textColor);
+
+                // Create form field
+                const field = new doc.AcroFormTextField();
+                field.Rect = [x, y, w, h];
+                field.fieldName = fieldName;
+                field.value = value || '';
+                field.defaultValue = '';
+                field.textAlign = 'left';
+                field.fontSize = 9;
+                field.maxFontSize = 9;
+                field.textColor = '0 0 0';
+                field.backgroundColor = 'FFFFFF';
+                doc.addField(field);
+
+                // Also draw current value as text (for visual reference)
+                if (value) {
+                    doc.text(value, x + 2, y + h - 2);
+                }
+            }
+
+            // Helper for stat boxes
+            function drawStatBox(x, y, w, h, label, fieldName, value) {
+                // Box background
+                doc.setFillColor(...accentColor);
+                doc.setDrawColor(...accentColor);
+                doc.roundedRect(x, y, w, h, 2, 2, 'FD');
+
+                // Label
+                doc.setFontSize(5);
+                doc.setTextColor(...highlightColor);
+                doc.setFont('helvetica', 'bold');
+                doc.text(label.toUpperCase(), x + w/2, y + 5, { align: 'center' });
+
+                // Input area
+                const inputW = w - 6;
+                const inputH = h - 12;
+                const inputX = x + 3;
+                const inputY = y + 8;
+                doc.setFillColor(...inputBg);
+                doc.roundedRect(inputX, inputY, inputW, inputH, 1, 1, 'FD');
+
+                // Form field
+                const field = new doc.AcroFormTextField();
+                field.Rect = [inputX, inputY, inputW, inputH];
+                field.fieldName = fieldName;
+                field.value = value || '';
+                field.defaultValue = '';
+                field.textAlign = 'center';
+                field.fontSize = 12;
+                field.maxFontSize = 12;
+                doc.addField(field);
+
+                if (value) {
+                    doc.setFontSize(12);
+                    doc.setTextColor(...textColor);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(value, x + w/2, y + h - 5, { align: 'center' });
+                }
+            }
+
+            // Helper for multiline text areas
+            function drawTextArea(x, y, w, h, label, fieldName, value) {
+                // Section title
+                doc.setFontSize(7);
+                doc.setTextColor(...highlightColor);
+                doc.setFont('helvetica', 'bold');
+                doc.text('>> ' + label.toUpperCase(), x, y - 2);
+
+                // Divider
+                doc.setDrawColor(...accentColor);
+                doc.line(x, y, x + w, y);
+
+                // Text area box
+                doc.setFillColor(...inputBg);
+                doc.setDrawColor(...accentColor);
+                doc.roundedRect(x, y + 2, w, h, 1, 1, 'FD');
+
+                // Form field
+                const field = new doc.AcroFormTextField();
+                field.Rect = [x, y + 2, w, h];
+                field.fieldName = fieldName;
+                field.value = value || '';
+                field.defaultValue = '';
+                field.multiline = true;
+                field.fontSize = 8;
+                field.maxFontSize = 8;
+                doc.addField(field);
+
+                if (value) {
+                    doc.setFontSize(7);
+                    doc.setTextColor(...textColor);
+                    doc.setFont('helvetica', 'normal');
+                    const lines = doc.splitTextToSize(value, w - 4);
+                    doc.text(lines.slice(0, Math.floor(h/4)), x + 2, y + 6);
+                }
+            }
+
+            // Ship Image placeholder
+            doc.setFillColor(...inputBg);
+            doc.setDrawColor(...accentColor);
+            doc.setLineDashPattern([1, 1], 0);
+            doc.roundedRect(10, y, 30, 22, 2, 2, 'FD');
+            doc.setLineDashPattern([], 0);
+            doc.setFontSize(6);
+            doc.setTextColor(100, 100, 100);
+            doc.text('Ship Image', 25, y + 12, { align: 'center' });
+
+            // Basic info fields
+            const val = (id) => document.getElementById(id)?.value || '';
+
+            drawField(45, y, 50, 7, 'Starship Name', 'shipName', val('shipName'));
+            drawField(100, y, 40, 7, 'Class / Tier', 'shipClass', val('shipClass'));
+            drawField(45, y + 12, 95, 7, 'Quick Description', 'shipDesc', val('shipDesc'));
+
+            // Stats boxes
+            let statX = 145;
+            drawStatBox(statX, y, 18, 22, 'AC', 'armorClass', val('armorClass'));
+            drawStatBox(statX + 20, y, 18, 22, 'HP', 'hitPoints', val('hitPoints'));
+            drawStatBox(statX + 40, y, 18, 22, 'Shields', 'shields', val('shields'));
+
+            // Saving throws (below stats)
+            drawStatBox(statX + 7, y + 24, 16, 18, 'Reflex', 'reflexSave', val('reflexSave'));
+            drawStatBox(statX + 35, y + 24, 16, 18, 'Fort', 'fortSave', val('fortSave'));
+
+            y += 50;
+
+            // Crew Roles section title
+            doc.setFontSize(8);
+            doc.setTextColor(...highlightColor);
+            doc.setFont('helvetica', 'bold');
+            doc.text('>> CREW ROLES', 10, y);
+            doc.setDrawColor(...accentColor);
+            doc.line(10, y + 2, 200, y + 2);
+
+            y += 6;
+
+            // Role cards (4 columns, 2 rows)
+            const roles = [
+                { label: 'Captain', id: 'captain', icon: 'CPT' },
+                { label: 'Engineer', id: 'engineer', icon: 'ENG' },
+                { label: 'Gunner', id: 'gunner', icon: 'GUN' },
+                { label: 'Magic Officer', id: 'magicOfficer', icon: 'MAG' },
+                { label: 'Pilot', id: 'pilot', icon: 'PLT' },
+                { label: 'Science Officer', id: 'scienceOfficer', icon: 'SCI' },
+                { label: 'Medical Officer', id: 'medicalOfficer', icon: 'MED' }
+            ];
+
+            const roleW = 46;
+            const roleH = 14;
+            const roleGap = 2;
+
+            roles.forEach((role, i) => {
+                const col = i % 4;
+                const row = Math.floor(i / 4);
+                const rx = 10 + col * (roleW + roleGap);
+                const ry = y + row * (roleH + roleGap);
+
+                // Role card background
+                doc.setFillColor(...accentColor);
+                doc.roundedRect(rx, ry, roleW, roleH, 1, 1, 'F');
+
+                // Icon circle
+                doc.setFillColor(...inputBg);
+                doc.circle(rx + 6, ry + roleH/2, 4, 'F');
+                doc.setFontSize(5);
+                doc.setTextColor(...textColor);
+                doc.text(role.icon, rx + 6, ry + roleH/2 + 1.5, { align: 'center' });
+
+                // Role label
+                doc.setFontSize(5);
+                doc.setTextColor(...highlightColor);
+                doc.text(role.label.toUpperCase(), rx + 13, ry + 4);
+
+                // Input field
+                doc.setFillColor(...inputBg);
+                doc.roundedRect(rx + 13, ry + 5, roleW - 16, 6, 0.5, 0.5, 'F');
+
+                // Form field
+                const field = new doc.AcroFormTextField();
+                field.Rect = [rx + 13, ry + 5, roleW - 16, 6];
+                field.fieldName = role.id;
+                field.value = val(role.id);
+                field.defaultValue = '';
+                field.fontSize = 7;
+                field.maxFontSize = 7;
+                doc.addField(field);
+
+                if (val(role.id)) {
+                    doc.setFontSize(6);
+                    doc.setTextColor(...textColor);
+                    doc.text(val(role.id), rx + 14, ry + 9.5);
+                }
+            });
+
+            y += 36;
+
+            // Two column layout: Bonuses + Description
+            const colW = 93;
+            drawTextArea(10, y, colW, 55, 'Starship Bonuses', 'bonuses', val('bonuses'));
+            drawTextArea(107, y, colW, 55, 'Starship Description', 'description', val('description'));
+
+            y += 62;
+
+            // Session Notes
+            drawTextArea(10, y, 190, 40, 'Session Notes', 'notes', val('notes'));
+
+            // Footer
+            doc.setFontSize(5);
+            doc.setTextColor(100, 100, 100);
+            doc.text('Starfinder 2e Starship Sheet - Form Fillable PDF', 105, 290, { align: 'center' });
+
+            // Save the PDF
+            doc.save('starship-sheet.pdf');
+        }
+
+        function saveToStorage() {
+            const formData = {
+                shipName: document.getElementById('shipName').value,
+                shipClass: document.getElementById('shipClass').value,
+                shipDesc: document.getElementById('shipDesc').value,
+                armorClass: document.getElementById('armorClass').value,
+                hitPoints: document.getElementById('hitPoints').value,
+                shields: document.getElementById('shields').value,
+                reflexSave: document.getElementById('reflexSave').value,
+                fortSave: document.getElementById('fortSave').value,
+                captain: document.getElementById('captain').value,
+                engineer: document.getElementById('engineer').value,
+                gunner: document.getElementById('gunner').value,
+                magicOfficer: document.getElementById('magicOfficer').value,
+                pilot: document.getElementById('pilot').value,
+                scienceOfficer: document.getElementById('scienceOfficer').value,
+                medicalOfficer: document.getElementById('medicalOfficer').value,
+                bonuses: document.getElementById('bonuses').value,
+                description: document.getElementById('description').value,
+                notes: document.getElementById('notes').value
+            };
+            localStorage.setItem('starfinderShipSheet', JSON.stringify(formData));
+            alert('Saved!');
+        }
+
+        function loadFromStorage() {
+            const savedData = localStorage.getItem('starfinderShipSheet');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                document.getElementById('shipName').value = formData.shipName || '';
+                document.getElementById('shipClass').value = formData.shipClass || '';
+                document.getElementById('shipDesc').value = formData.shipDesc || '';
+                document.getElementById('armorClass').value = formData.armorClass || '';
+                document.getElementById('hitPoints').value = formData.hitPoints || '';
+                document.getElementById('shields').value = formData.shields || '';
+                document.getElementById('reflexSave').value = formData.reflexSave || '';
+                document.getElementById('fortSave').value = formData.fortSave || '';
+                document.getElementById('captain').value = formData.captain || '';
+                document.getElementById('engineer').value = formData.engineer || '';
+                document.getElementById('gunner').value = formData.gunner || '';
+                document.getElementById('magicOfficer').value = formData.magicOfficer || '';
+                document.getElementById('pilot').value = formData.pilot || '';
+                document.getElementById('scienceOfficer').value = formData.scienceOfficer || '';
+                document.getElementById('medicalOfficer').value = formData.medicalOfficer || '';
+                document.getElementById('bonuses').value = formData.bonuses || '';
+                document.getElementById('description').value = formData.description || '';
+                document.getElementById('notes').value = formData.notes || '';
+                alert('Loaded!');
+            } else {
+                alert('No saved data found.');
+            }
+        }
+
+        function clearForm() {
+            if (confirm('Clear all fields?')) {
+                document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(input => {
+                    input.value = '';
+                });
+                const container = document.getElementById('shipImage');
+                container.style.backgroundImage = '';
+                container.innerHTML = '<input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="loadImage(event)">';
+            }
+        }
+
+        // Auto-load saved data on page load (silently)
+        window.onload = function() {
+            const savedData = localStorage.getItem('starfinderShipSheet');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                document.getElementById('shipName').value = formData.shipName || '';
+                document.getElementById('shipClass').value = formData.shipClass || '';
+                document.getElementById('shipDesc').value = formData.shipDesc || '';
+                document.getElementById('armorClass').value = formData.armorClass || '';
+                document.getElementById('hitPoints').value = formData.hitPoints || '';
+                document.getElementById('shields').value = formData.shields || '';
+                document.getElementById('reflexSave').value = formData.reflexSave || '';
+                document.getElementById('fortSave').value = formData.fortSave || '';
+                document.getElementById('captain').value = formData.captain || '';
+                document.getElementById('engineer').value = formData.engineer || '';
+                document.getElementById('gunner').value = formData.gunner || '';
+                document.getElementById('magicOfficer').value = formData.magicOfficer || '';
+                document.getElementById('pilot').value = formData.pilot || '';
+                document.getElementById('scienceOfficer').value = formData.scienceOfficer || '';
+                document.getElementById('medicalOfficer').value = formData.medicalOfficer || '';
+                document.getElementById('bonuses').value = formData.bonuses || '';
+                document.getElementById('description').value = formData.description || '';
+                document.getElementById('notes').value = formData.notes || '';
+            }
+        };
+    </script>
+</body>
+</html>
