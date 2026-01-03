@@ -10,6 +10,10 @@ Real-time collaborative starship character sheet for Starfinder 2nd Edition. Mul
 - **Persistent storage** - SQLite database with automatic saving
 - **Auto-reconnect** - Seamless recovery from connection drops
 
+![Starship Sheet Interface](images/sreenshot-1.png)
+
+*The starship sheet interface with crew roles, stats, and session notes.*
+
 ## Quick Start
 
 ```bash
